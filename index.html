@@ -1,198 +1,200 @@
+===== index.html =====
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0f172a">
-  <title>Il Mio Budget</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f172a">
+<title>Il Mio Budget</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div id="lock-screen" class="lock-screen hidden"><div class="lock-content">
+<div class="lock-icon">🔒</div>
+<h2 id="lock-title">Inserisci il PIN</h2>
+<p id="lock-subtitle">Sblocca per accedere al tuo budget</p>
+<div id="pin-display" class="pin-display"></div>
+<div class="pin-pad" id="pin-pad">
+<button data-num="1">1</button><button data-num="2">2</button><button data-num="3">3</button>
+<button data-num="4">4</button><button data-num="5">5</button><button data-num="6">6</button>
+<button data-num="7">7</button><button data-num="8">8</button><button data-num="9">9</button>
+<button data-num="bio" id="btn-pin-bio" class="hidden">👆</button>
+<button data-num="0">0</button><button data-num="del">⌫</button>
+</div>
+<button id="btn-pin-reset" class="btn-secondary" style="margin-top:1rem;width:100%">Reset PIN (cancella tutto)</button>
+</div></div>
 
-  <header class="app-header">
-    <div class="header-row">
-      <h1>💰 Il Mio Budget</h1>
-      <button id="btn-install" class="btn-install hidden">Installa</button>
-    </div>
-    <div class="balance-card">
-      <span class="balance-label">Saldo attuale</span>
-      <div class="balance-row">
-        <span id="saldo-attuale" class="balance-value">€ 0,00</span>
-        <button id="btn-edit-saldo" class="btn-edit-balance" title="Modifica saldo iniziale">✎</button>
-      </div>
-      <span id="saldo-updated" class="balance-updated"></span>
-    </div>
-  </header>
+<header class="app-header">
+<div class="header-row">
+<h1>💰 Il Mio Budget</h1>
+<div style="display:flex;gap:.5rem">
+<button id="btn-security" class="btn-install hidden" title="Sicurezza">🔐</button>
+<button id="btn-install" class="btn-install hidden">Installa</button>
+</div></div>
+<div class="balance-card">
+<span class="balance-label">Saldo attuale</span>
+<div class="balance-row">
+<span id="saldo-attuale" class="balance-value">€ 0,00</span>
+<button id="btn-edit-saldo" class="btn-edit-balance" title="Modifica saldo iniziale">✎</button>
+</div>
+<span id="saldo-updated" class="balance-updated"></span>
+</div>
+</header>
 
-  <main>
-    <!-- Riepilogo + grafico -->
-    <section class="card">
-      <div class="card-header">
-        <h2>Riepilogo</h2>
-        <select id="selettore-mese" class="selettore-mese">
-          <option value="all">Tutti i mesi</option>
-        </select>
-      </div>
+<main>
+<section class="card">
+<div class="card-header">
+<h2>Riepilogo</h2>
+<select id="selettore-mese" class="selettore-mese"><option value="all">Tutti i mesi</option></select>
+</div>
+<div class="grid-2">
+<div class="stat stat-in"><span class="stat-label">Entrate</span><span id="tot-entrate" class="stat-value">€ 0,00</span></div>
+<div class="stat stat-out"><span class="stat-label">Uscite</span><span id="tot-uscite" class="stat-value">€ 0,00</span></div>
+</div>
+<div class="grid-2" style="margin-top:.75rem">
+<div class="stat"><span class="stat-label">Extra</span><span id="tot-extra" class="stat-value">€ 0,00</span></div>
+<div class="stat"><span class="stat-label">Spesa alimentari</span><span id="tot-spesa" class="stat-value">€ 0,00</span></div>
+</div>
+<div class="grafico-wrapper"><h3>Trend ultimi 6 mesi</h3><div id="trend-chart"></div></div>
+<div class="grafico-wrapper"><h3>Uscite per categoria</h3><div id="grafico-categorie"></div></div>
+<div class="grafico-wrapper">
+<div class="budget-header"><h3>Budget per categoria</h3><button id="btn-edit-budget" class="btn-edit-budget" title="Imposta budget">⚙️</button></div>
+<div id="budget-list"></div>
+</div>
+</section>
 
-      <div class="grid-2">
-        <div class="stat stat-in">
-          <span class="stat-label">Entrate</span>
-          <span id="tot-entrate" class="stat-value">€ 0,00</span>
-        </div>
-        <div class="stat stat-out">
-          <span class="stat-label">Uscite</span>
-          <span id="tot-uscite" class="stat-value">€ 0,00</span>
-        </div>
-      </div>
-      <div class="grid-2" style="margin-top:0.75rem">
-        <div class="stat">
-          <span class="stat-label">Extra</span>
-          <span id="tot-extra" class="stat-value">€ 0,00</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Spesa alimentari</span>
-          <span id="tot-spesa" class="stat-value">€ 0,00</span>
-        </div>
-      </div>
+<section class="card">
+<h2>Nuovo movimento</h2>
+<form id="form-movimento" class="form" novalidate>
+<div class="form-row">
+<label>Data<input type="date" id="input-data" required></label>
+<label>Tipo<select id="input-tipo" required><option value="uscita">Uscita</option><option value="entrata">Entrata</option></select></label>
+</div>
+<label>Descrizione<input type="text" id="input-nota" placeholder="es. Esselunga" maxlength="80" required></label>
+<div class="form-row">
+<label>Importo €<input type="number" id="input-importo" step="0.01" min="0.01" required></label>
+<label>Categoria<select id="input-categoria" required>
+<option value="Spesa">Spesa alimentari</option><option value="Extra">Extra</option><option value="Fissa">Spesa fissa</option>
+<option value="Stipendio">Stipendio</option><option value="Prelievo">Prelievo</option><option value="Altro">Altro</option>
+</select></label>
+</div>
+<p id="form-error" class="form-error hidden"></p>
+<button type="submit" class="btn-primary">Aggiungi</button>
+</form>
+</section>
 
-      <div class="grafico-wrapper">
-        <h3>Uscite per categoria</h3>
-        <div id="grafico-categorie"></div>
-      </div>
-    </section>
+<section class="card">
+<input type="search" id="search-input" class="search-input" placeholder="🔍 Cerca per descrizione...">
+<div class="filters">
+<button class="chip active" data-filter="all">Tutti</button>
+<button class="chip" data-filter="entrata">Entrate</button>
+<button class="chip" data-filter="uscita">Uscite</button>
+<button class="chip" data-filter="Extra">Extra</button>
+<button class="chip" data-filter="Spesa">Spesa</button>
+</div>
+<ul id="lista-movimenti" class="movimenti"></ul>
+</section>
 
-    <!-- Form nuovo movimento -->
-    <section class="card">
-      <h2>Nuovo movimento</h2>
-      <form id="form-movimento" class="form" novalidate>
-        <div class="form-row">
-          <label>Data
-            <input type="date" id="input-data" required>
-          </label>
-          <label>Tipo
-            <select id="input-tipo" required>
-              <option value="uscita">Uscita</option>
-              <option value="entrata">Entrata</option>
-            </select>
-          </label>
-        </div>
-        <label>Descrizione
-          <input type="text" id="input-nota" placeholder="es. Esselunga" maxlength="80" required>
-        </label>
-        <div class="form-row">
-          <label>Importo €
-            <input type="number" id="input-importo" step="0.01" min="0.01" required>
-          </label>
-          <label>Categoria
-            <select id="input-categoria" required>
-              <option value="Spesa">Spesa alimentari</option>
-              <option value="Extra">Extra</option>
-              <option value="Fissa">Spesa fissa</option>
-              <option value="Stipendio">Stipendio</option>
-              <option value="Prelievo">Prelievo</option>
-              <option value="Altro">Altro</option>
-            </select>
-          </label>
-        </div>
-        <p id="form-error" class="form-error hidden"></p>
-        <button type="submit" class="btn-primary">Aggiungi</button>
-      </form>
-    </section>
+<section class="card">
+<div class="card-header">
+<h2>Cronologico</h2>
+<button id="btn-toggle-cron" class="btn-edit-budget" title="Mostra/nascondi">▾</button>
+</div>
+<div id="cron-wrapper" class="cron-wrapper hidden">
+<div class="cron-scroll">
+<table class="cron-table">
+<thead><tr><th>Data</th><th>Descrizione</th><th class="right">Entrate</th><th class="right">Uscite</th><th class="right">Saldo</th></tr></thead>
+<tbody id="cron-body"></tbody>
+<tfoot id="cron-foot"></tfoot>
+</table>
+</div>
+<p class="cron-hint" id="cron-hint"></p>
+</div>
+</section>
 
-    <!-- Filtri + lista -->
-    <section class="card">
-      <div class="filters">
-        <button class="chip active" data-filter="all">Tutti</button>
-        <button class="chip" data-filter="entrata">Entrate</button>
-        <button class="chip" data-filter="uscita">Uscite</button>
-        <button class="chip" data-filter="Extra">Extra</button>
-        <button class="chip" data-filter="Spesa">Spesa</button>
-      </div>
+<section class="card actions">
+<button id="btn-export" class="btn-secondary">Esporta JSON</button>
+<button id="btn-import" class="btn-secondary">Importa JSON</button>
+<button id="btn-reset" class="btn-danger">Reset app</button>
+</section>
+</main>
 
-      <ul id="lista-movimenti" class="movimenti"></ul>
-    </section>
+<div id="modale-edit" class="modale hidden"><div class="modale-content">
+<h2>Modifica movimento</h2>
+<form id="form-edit" class="form" novalidate>
+<div class="form-row">
+<label>Data<input type="date" id="edit-data" required></label>
+<label>Tipo<select id="edit-tipo" required><option value="uscita">Uscita</option><option value="entrata">Entrata</option></select></label>
+</div>
+<label>Descrizione<input type="text" id="edit-nota" maxlength="80" required></label>
+<div class="form-row">
+<label>Importo €<input type="number" id="edit-importo" step="0.01" min="0.01" required></label>
+<label>Categoria<select id="edit-categoria" required>
+<option value="Spesa">Spesa alimentari</option><option value="Extra">Extra</option><option value="Fissa">Spesa fissa</option>
+<option value="Stipendio">Stipendio</option><option value="Prelievo">Prelievo</option><option value="Altro">Altro</option>
+</select></label>
+</div>
+<p id="edit-error" class="form-error hidden"></p>
+<input type="hidden" id="edit-id">
+<div class="form-row">
+<button type="button" id="edit-annulla" class="btn-secondary">Annulla</button>
+<button type="submit" class="btn-primary">Salva</button>
+</div>
+</form>
+</div></div>
 
-    <!-- Azioni -->
-    <section class="card actions">
-      <button id="btn-export" class="btn-secondary">Esporta JSON</button>
-      <button id="btn-import" class="btn-secondary">Importa JSON</button>
-      <button id="btn-reset" class="btn-danger">Reset app</button>
-    </section>
-  </main>
+<div id="modale-saldo" class="modale hidden"><div class="modale-content">
+<h2>Saldo iniziale</h2>
+<p class="modale-hint">Il valore di partenza del tuo conto.</p>
+<form id="form-saldo" class="form" novalidate>
+<label>Saldo iniziale €<input type="number" id="saldo-iniziale-input" step="0.01" required></label>
+<p id="saldo-error" class="form-error hidden"></p>
+<div class="form-row">
+<button type="button" id="saldo-annulla" class="btn-secondary">Annulla</button>
+<button type="submit" class="btn-primary">Salva</button>
+</div>
+</form>
+</div></div>
 
-  <!-- MODALE MODIFICA MOVIMENTO -->
-  <div id="modale-edit" class="modale hidden">
-    <div class="modale-content">
-      <h2>Modifica movimento</h2>
-      <form id="form-edit" class="form" novalidate>
-        <div class="form-row">
-          <label>Data
-            <input type="date" id="edit-data" required>
-          </label>
-          <label>Tipo
-            <select id="edit-tipo" required>
-              <option value="uscita">Uscita</option>
-              <option value="entrata">Entrata</option>
-            </select>
-          </label>
-        </div>
-        <label>Descrizione
-          <input type="text" id="edit-nota" maxlength="80" required>
-        </label>
-        <div class="form-row">
-          <label>Importo €
-            <input type="number" id="edit-importo" step="0.01" min="0.01" required>
-          </label>
-          <label>Categoria
-            <select id="edit-categoria" required>
-              <option value="Spesa">Spesa alimentari</option>
-              <option value="Extra">Extra</option>
-              <option value="Fissa">Spesa fissa</option>
-              <option value="Stipendio">Stipendio</option>
-              <option value="Prelievo">Prelievo</option>
-              <option value="Altro">Altro</option>
-            </select>
-          </label>
-        </div>
-        <p id="edit-error" class="form-error hidden"></p>
-        <input type="hidden" id="edit-id">
-        <div class="form-row">
-          <button type="button" id="edit-annulla" class="btn-secondary">Annulla</button>
-          <button type="submit" class="btn-primary">Salva</button>
-        </div>
-      </form>
-    </div>
-  </div>
+<div id="modale-budget" class="modale hidden"><div class="modale-content">
+<h2>Budget per categoria</h2>
+<p class="modale-hint">Imposta un limite di spesa mensile. Lascia vuoto per disattivare.</p>
+<form id="form-budget" class="form" novalidate>
+<div id="budget-inputs"></div>
+<div class="form-row">
+<button type="button" id="budget-annulla" class="btn-secondary">Annulla</button>
+<button type="submit" class="btn-primary">Salva</button>
+</div>
+</form>
+</div></div>
 
-  <!-- MODALE SALDO INIZIALE -->
-  <div id="modale-saldo" class="modale hidden">
-    <div class="modale-content">
-      <h2>Saldo iniziale</h2>
-      <p class="modale-hint">
-        Il valore di partenza del tuo conto. Viene aggiunto alle entrate e sottratto dalle uscite
-        per calcolare il saldo attuale.
-      </p>
-      <form id="form-saldo" class="form" novalidate>
-        <label>Saldo iniziale €
-          <input type="number" id="saldo-iniziale-input" step="0.01" required>
-        </label>
-        <p id="saldo-error" class="form-error hidden"></p>
-        <div class="form-row">
-          <button type="button" id="saldo-annulla" class="btn-secondary">Annulla</button>
-          <button type="submit" class="btn-primary">Salva</button>
-        </div>
-      </form>
-    </div>
-  </div>
+<div id="modale-security" class="modale hidden"><div class="modale-content">
+<h2>Sicurezza</h2>
+<p class="modale-hint">Proteggi l'app con un PIN a 4 cifre. Puoi anche attivare l'accesso con impronta.</p>
+<form id="form-security" class="form" novalidate>
+<label>Nuovo PIN (4 cifre)<input type="password" id="sec-pin1" inputmode="numeric" maxlength="4" pattern="\d{4}" placeholder="••••"></label>
+<label>Ripeti PIN<input type="password" id="sec-pin2" inputmode="numeric" maxlength="4" pattern="\d{4}" placeholder="••••"></label>
+<p id="sec-error" class="form-error hidden"></p>
+<p id="sec-info" class="modale-hint" style="margin-top:.5rem"></p>
+<div id="sec-bio-row" class="hidden" style="display:flex;gap:.5rem;flex-wrap:wrap">
+<button type="button" id="sec-bio-on" class="btn-secondary">Attiva impronta</button>
+<button type="button" id="sec-bio-off" class="btn-secondary hidden">Disattiva impronta</button>
+</div>
+<div class="form-row">
+<button type="button" id="sec-remove" class="btn-danger">Rimuovi PIN</button>
+<button type="submit" class="btn-primary">Salva PIN</button>
+</div>
+<div class="form-row" style="margin-top:.5rem">
+<button type="button" id="sec-close" class="btn-secondary" style="grid-column:1/-1">Chiudi</button>
+</div>
+</form>
+</div></div>
 
-  <footer class="app-footer">
-    <span>Versione 2.0 · Dati salvati sul tuo dispositivo</span>
-  </footer>
-
-  <script src="app.js"></script>
+<footer class="app-footer"><span>Versione 2.2 · Dati salvati sul tuo dispositivo</span></footer>
+<script src="app.js"></script>
 </body>
 </html>
