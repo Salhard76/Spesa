@@ -1,4 +1,3 @@
-===== index.html =====
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -9,7 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -93,8 +92,12 @@
 <button class="chip active" data-filter="all">Tutti</button>
 <button class="chip" data-filter="entrata">Entrate</button>
 <button class="chip" data-filter="uscita">Uscite</button>
-<button class="chip" data-filter="Extra">Extra</button>
 <button class="chip" data-filter="Spesa">Spesa</button>
+<button class="chip" data-filter="Extra">Extra</button>
+<button class="chip" data-filter="Fissa">Fissa</button>
+<button class="chip" data-filter="Prelievo">Prelievo</button>
+<button class="chip" data-filter="Stipendio">Stipendio</button>
+<button class="chip" data-filter="Altro">Altro</button>
 </div>
 <ul id="lista-movimenti" class="movimenti"></ul>
 </section>
@@ -176,8 +179,8 @@
 <h2>Sicurezza</h2>
 <p class="modale-hint">Proteggi l'app con un PIN a 4 cifre. Puoi anche attivare l'accesso con impronta.</p>
 <form id="form-security" class="form" novalidate>
-<label>Nuovo PIN (4 cifre)<input type="password" id="sec-pin1" inputmode="numeric" maxlength="4" pattern="\d{4}" placeholder="••••"></label>
-<label>Ripeti PIN<input type="password" id="sec-pin2" inputmode="numeric" maxlength="4" pattern="\d{4}" placeholder="••••"></label>
+<label>Nuovo PIN (4 cifre)<input type="password" id="sec-pin1" inputmode="numeric" maxlength="4" pattern="\d{4}" placeholder="••••" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"></label>
+<label>Ripeti PIN<input type="password" id="sec-pin2" inputmode="numeric" maxlength="4" pattern="\d{4}" placeholder="••••" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false"></label>
 <p id="sec-error" class="form-error hidden"></p>
 <p id="sec-info" class="modale-hint" style="margin-top:.5rem"></p>
 <div id="sec-bio-row" class="hidden" style="display:flex;gap:.5rem;flex-wrap:wrap">
@@ -185,7 +188,7 @@
 <button type="button" id="sec-bio-off" class="btn-secondary hidden">Disattiva impronta</button>
 </div>
 <div class="form-row">
-<button type="button" id="sec-remove" class="btn-danger">Rimuovi PIN</button>
+<button type="button" id="sec-remove" class="btn-danger hidden">Rimuovi PIN</button>
 <button type="submit" class="btn-primary">Salva PIN</button>
 </div>
 <div class="form-row" style="margin-top:.5rem">
@@ -194,7 +197,7 @@
 </form>
 </div></div>
 
-<footer class="app-footer"><span>Versione 2.2 · Dati salvati sul tuo dispositivo</span></footer>
+<footer class="app-footer"><span>Versione 2.3 · Dati salvati sul tuo dispositivo</span></footer>
 <script src="app.js"></script>
 </body>
 </html>
