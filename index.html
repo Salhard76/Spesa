@@ -87,7 +87,7 @@
       </form>
     </section>
 
-    <!-- Filtri -->
+    <!-- Filtri e lista movimenti -->
     <section class="card">
       <div class="filters">
         <button class="chip active" data-filter="all">Tutti</button>
@@ -107,8 +107,51 @@
     </section>
   </main>
 
+  <!-- MODALE MODIFICA -->
+  <div id="modale-edit" class="modale hidden">
+    <div class="modale-content">
+      <h2>Modifica movimento</h2>
+      <form id="form-edit" class="form">
+        <div class="form-row">
+          <label>Data
+            <input type="date" id="edit-data" required>
+          </label>
+          <label>Tipo
+            <select id="edit-tipo" required>
+              <option value="uscita">Uscita</option>
+              <option value="entrata">Entrata</option>
+            </select>
+          </label>
+        </div>
+        <label>Descrizione
+          <input type="text" id="edit-nota" required>
+        </label>
+        <div class="form-row">
+          <label>Importo €
+            <input type="number" id="edit-importo" step="0.01" min="0" required>
+          </label>
+          <label>Categoria
+            <select id="edit-categoria" required>
+              <option value="Spesa">Spesa alimentari</option>
+              <option value="Extra">Extra</option>
+              <option value="Fissa">Spesa fissa</option>
+              <option value="Stipendio">Stipendio</option>
+              <option value="Prelievo">Prelievo</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </label>
+        </div>
+        <input type="hidden" id="edit-id">
+        <div class="form-row">
+          <button type="button" id="edit-annulla" class="btn-secondary">Annulla</button>
+          <button type="submit" class="btn-primary">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <footer class="app-footer">
-    <span>Versione 1.0 · Dati salvati sul tuo dispositivo</span>
+    <span>Versione 1.1 · Dati salvati sul tuo dispositivo</span>
   </footer>
 
   <script src="app.js"></script>

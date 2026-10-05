@@ -115,6 +115,7 @@ function renderLista() {
       </div>
       <div style="display:flex;align-items:center">
         <span class="mov-importo ${m.tipo}">${segno} ${fmtEUR.format(m.importo)}</span>
+        <button class="mov-modifica" data-id="${id}" title="Modifica">✎</button>
         <button class="mov-elimina" data-id="${id}" title="Elimina">✕</button>
       </div>
     `;
@@ -122,7 +123,7 @@ function renderLista() {
     ul.appendChild(li);
   }
 
-  // Gestione eliminazione
+  // Eliminazione
   ul.querySelectorAll('.mov-elimina').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.id;
@@ -131,6 +132,13 @@ function renderLista() {
         salvaDati();
         renderTutto();
       }
+    });
+  });
+
+  // Modifica
+  ul.querySelectorAll('.mov-modifica').forEach(btn => {
+    btn.addEventListener('click', () => {
+      apriModaleEdit(btn.dataset.id);
     });
   });
 }
@@ -176,6 +184,66 @@ function initForm() {
     renderTutto();
     form.reset();
     inputData.valueAsDate = new Date();
+  });
+}
+
+// ---------- Modale modifica ----------
+function apriModaleEdit(id) {
+  const m = movimenti.find(x => String(x.id) === String(id));
+  if (!m) return;
+
+  document.getElementById('edit-id').value = m.id;
+  document.getElementById('edit-data').value = m.data;
+  document.getElementById('edit-tipo').value = m.tipo;
+  document.getElementById('edit-nota').value = m.nota;
+  document.getElementById('edit-importo').value = m.importo;
+  document.getElementById('edit-categoria').value = m.categoria;
+
+  document.getElementById('modale-edit').classList.remove('hidden');
+}
+
+function chiudiModaleEdit() {
+  document.getElementById('modale-edit').classList.add('hidden');
+}
+
+function initModaleEdit() {
+  const form = document.getElementById('form-edit');
+  const btnAnnulla = document.getElementById('edit-annulla');
+  const modale = document.getElementById('modale-edit');
+
+  btnAnnulla.addEventListener('click', chiudiModaleEdit);
+
+  // Chiudi cliccando fuori dal riquadro
+  modale.addEventListener('click', (e) => {
+    if (e.target === modale) chiudiModaleEdit();
+  });
+
+  // Chiudi con ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modale.classList.contains('hidden')) {
+      chiudiModaleEdit();
+    }
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const id = document.getElementById('edit-id').value;
+    const idx = movimenti.findIndex(x => String(x.id) === String(id));
+    if (idx === -1) return;
+
+    movimenti[idx] = {
+      ...movimenti[idx],
+      data: document.getElementById('edit-data').value,
+      tipo: document.getElementById('edit-tipo').value,
+      nota: document.getElementById('edit-nota').value.trim(),
+      importo: parseFloat(document.getElementById('edit-importo').value),
+      categoria: document.getElementById('edit-categoria').value
+    };
+
+    salvaDati();
+    renderTutto();
+    chiudiModaleEdit();
   });
 }
 
@@ -242,6 +310,7 @@ async function init() {
   initFiltri();
   initAzioni();
   initPWA();
+  initModaleEdit();
   renderTutto();
 }
 
