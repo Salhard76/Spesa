@@ -6,8 +6,9 @@
   <meta name="theme-color" content="#0f172a">
   <title>Il Mio Budget</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/svg+xml" href="icon.svg">
-  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,15 +20,24 @@
     </div>
     <div class="balance-card">
       <span class="balance-label">Saldo attuale</span>
-      <span id="saldo-attuale" class="balance-value">€ 0,00</span>
+      <div class="balance-row">
+        <span id="saldo-attuale" class="balance-value">€ 0,00</span>
+        <button id="btn-edit-saldo" class="btn-edit-balance" title="Modifica saldo iniziale">✎</button>
+      </div>
       <span id="saldo-updated" class="balance-updated"></span>
     </div>
   </header>
 
   <main>
-    <!-- Dashboard riepilogo -->
+    <!-- Riepilogo + grafico -->
     <section class="card">
-      <h2>Riepilogo mese</h2>
+      <div class="card-header">
+        <h2>Riepilogo</h2>
+        <select id="selettore-mese" class="selettore-mese">
+          <option value="all">Tutti i mesi</option>
+        </select>
+      </div>
+
       <div class="grid-2">
         <div class="stat stat-in">
           <span class="stat-label">Entrate</span>
@@ -48,12 +58,17 @@
           <span id="tot-spesa" class="stat-value">€ 0,00</span>
         </div>
       </div>
+
+      <div class="grafico-wrapper">
+        <h3>Uscite per categoria</h3>
+        <div id="grafico-categorie"></div>
+      </div>
     </section>
 
     <!-- Form nuovo movimento -->
     <section class="card">
       <h2>Nuovo movimento</h2>
-      <form id="form-movimento" class="form">
+      <form id="form-movimento" class="form" novalidate>
         <div class="form-row">
           <label>Data
             <input type="date" id="input-data" required>
@@ -66,11 +81,11 @@
           </label>
         </div>
         <label>Descrizione
-          <input type="text" id="input-nota" placeholder="es. Esselunga" required>
+          <input type="text" id="input-nota" placeholder="es. Esselunga" maxlength="80" required>
         </label>
         <div class="form-row">
           <label>Importo €
-            <input type="number" id="input-importo" step="0.01" min="0" required>
+            <input type="number" id="input-importo" step="0.01" min="0.01" required>
           </label>
           <label>Categoria
             <select id="input-categoria" required>
@@ -83,11 +98,12 @@
             </select>
           </label>
         </div>
+        <p id="form-error" class="form-error hidden"></p>
         <button type="submit" class="btn-primary">Aggiungi</button>
       </form>
     </section>
 
-    <!-- Filtri e lista movimenti -->
+    <!-- Filtri + lista -->
     <section class="card">
       <div class="filters">
         <button class="chip active" data-filter="all">Tutti</button>
@@ -102,16 +118,17 @@
 
     <!-- Azioni -->
     <section class="card actions">
-      <button id="btn-export" class="btn-secondary">Esporta dati (JSON)</button>
+      <button id="btn-export" class="btn-secondary">Esporta JSON</button>
+      <button id="btn-import" class="btn-secondary">Importa JSON</button>
       <button id="btn-reset" class="btn-danger">Reset app</button>
     </section>
   </main>
 
-  <!-- MODALE MODIFICA -->
+  <!-- MODALE MODIFICA MOVIMENTO -->
   <div id="modale-edit" class="modale hidden">
     <div class="modale-content">
       <h2>Modifica movimento</h2>
-      <form id="form-edit" class="form">
+      <form id="form-edit" class="form" novalidate>
         <div class="form-row">
           <label>Data
             <input type="date" id="edit-data" required>
@@ -124,11 +141,11 @@
           </label>
         </div>
         <label>Descrizione
-          <input type="text" id="edit-nota" required>
+          <input type="text" id="edit-nota" maxlength="80" required>
         </label>
         <div class="form-row">
           <label>Importo €
-            <input type="number" id="edit-importo" step="0.01" min="0" required>
+            <input type="number" id="edit-importo" step="0.01" min="0.01" required>
           </label>
           <label>Categoria
             <select id="edit-categoria" required>
@@ -141,6 +158,7 @@
             </select>
           </label>
         </div>
+        <p id="edit-error" class="form-error hidden"></p>
         <input type="hidden" id="edit-id">
         <div class="form-row">
           <button type="button" id="edit-annulla" class="btn-secondary">Annulla</button>
@@ -150,8 +168,29 @@
     </div>
   </div>
 
+  <!-- MODALE SALDO INIZIALE -->
+  <div id="modale-saldo" class="modale hidden">
+    <div class="modale-content">
+      <h2>Saldo iniziale</h2>
+      <p class="modale-hint">
+        Il valore di partenza del tuo conto. Viene aggiunto alle entrate e sottratto dalle uscite
+        per calcolare il saldo attuale.
+      </p>
+      <form id="form-saldo" class="form" novalidate>
+        <label>Saldo iniziale €
+          <input type="number" id="saldo-iniziale-input" step="0.01" required>
+        </label>
+        <p id="saldo-error" class="form-error hidden"></p>
+        <div class="form-row">
+          <button type="button" id="saldo-annulla" class="btn-secondary">Annulla</button>
+          <button type="submit" class="btn-primary">Salva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <footer class="app-footer">
-    <span>Versione 1.1 · Dati salvati sul tuo dispositivo</span>
+    <span>Versione 2.0 · Dati salvati sul tuo dispositivo</span>
   </footer>
 
   <script src="app.js"></script>
