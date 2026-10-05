@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Il Mio Budget</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-row">
+      <h1>💰 Il Mio Budget</h1>
+      <button id="btn-install" class="btn-install hidden">Installa</button>
+    </div>
+    <div class="balance-card">
+      <span class="balance-label">Saldo attuale</span>
+      <span id="saldo-attuale" class="balance-value">€ 0,00</span>
+      <span id="saldo-updated" class="balance-updated"></span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Dashboard riepilogo -->
+    <section class="card">
+      <h2>Riepilogo mese</h2>
+      <div class="grid-2">
+        <div class="stat stat-in">
+          <span class="stat-label">Entrate</span>
+          <span id="tot-entrate" class="stat-value">€ 0,00</span>
+        </div>
+        <div class="stat stat-out">
+          <span class="stat-label">Uscite</span>
+          <span id="tot-uscite" class="stat-value">€ 0,00</span>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:0.75rem">
+        <div class="stat">
+          <span class="stat-label">Extra</span>
+          <span id="tot-extra" class="stat-value">€ 0,00</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Spesa alimentari</span>
+          <span id="tot-spesa" class="stat-value">€ 0,00</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form nuovo movimento -->
+    <section class="card">
+      <h2>Nuovo movimento</h2>
+      <form id="form-movimento" class="form">
+        <div class="form-row">
+          <label>Data
+            <input type="date" id="input-data" required>
+          </label>
+          <label>Tipo
+            <select id="input-tipo" required>
+              <option value="uscita">Uscita</option>
+              <option value="entrata">Entrata</option>
+            </select>
+          </label>
+        </div>
+        <label>Descrizione
+          <input type="text" id="input-nota" placeholder="es. Esselunga" required>
+        </label>
+        <div class="form-row">
+          <label>Importo €
+            <input type="number" id="input-importo" step="0.01" min="0" required>
+          </label>
+          <label>Categoria
+            <select id="input-categoria" required>
+              <option value="Spesa">Spesa alimentari</option>
+              <option value="Extra">Extra</option>
+              <option value="Fissa">Spesa fissa</option>
+              <option value="Stipendio">Stipendio</option>
+              <option value="Prelievo">Prelievo</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </label>
+        </div>
+        <button type="submit" class="btn-primary">Aggiungi</button>
+      </form>
+    </section>
+
+    <!-- Filtri -->
+    <section class="card">
+      <div class="filters">
+        <button class="chip active" data-filter="all">Tutti</button>
+        <button class="chip" data-filter="entrata">Entrate</button>
+        <button class="chip" data-filter="uscita">Uscite</button>
+        <button class="chip" data-filter="Extra">Extra</button>
+        <button class="chip" data-filter="Spesa">Spesa</button>
+      </div>
+
+      <ul id="lista-movimenti" class="movimenti"></ul>
+    </section>
+
+    <!-- Azioni -->
+    <section class="card actions">
+      <button id="btn-export" class="btn-secondary">Esporta dati (JSON)</button>
+      <button id="btn-reset" class="btn-danger">Reset app</button>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <span>Versione 1.0 · Dati salvati sul tuo dispositivo</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
