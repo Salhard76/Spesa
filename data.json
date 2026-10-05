@@ -1,14 +1,1 @@
-[
-  { "id": "1",  "data": "2026-09-23", "nota": "Stipendio Settembre",        "importo": 1794.39, "tipo": "entrata", "categoria": "Stipendio" },
-  { "id": "2",  "data": "2026-09-25", "nota": "Nintendo Store",            "importo": 5.99,    "tipo": "uscita",  "categoria": "Extra" },
-  { "id": "3",  "data": "2026-09-25", "nota": "Prelievo Mensile",          "importo": 300,     "tipo": "uscita",  "categoria": "Prelievo" },
-  { "id": "4",  "data": "2026-09-25", "nota": "Penny",                     "importo": 42.08,   "tipo": "uscita",  "categoria": "Spesa" },
-  { "id": "5",  "data": "2026-09-28", "nota": "Carrefour",                 "importo": 10.80,   "tipo": "uscita",  "categoria": "Spesa" },
-  { "id": "6",  "data": "2026-09-29", "nota": "C.C. Genova",               "importo": 4,       "tipo": "entrata", "categoria": "Altro" },
-  { "id": "7",  "data": "2026-09-30", "nota": "In's",                      "importo": 25.54,   "tipo": "uscita",  "categoria": "Spesa" },
-  { "id": "8",  "data": "2026-09-30", "nota": "Iliad Casa",                "importo": 21.99,   "tipo": "uscita",  "categoria": "Fissa" },
-  { "id": "9",  "data": "2026-10-01", "nota": "Rata Mutuo Ottobre",        "importo": 890.43,  "tipo": "uscita",  "categoria": "Fissa" },
-  { "id": "10", "data": "2026-10-01", "nota": "Ass.ne Rata Mutuo Ottobre", "importo": 42.01,   "tipo": "uscita",  "categoria": "Fissa" },
-  { "id": "11", "data": "2026-10-01", "nota": "Esselunga Online",          "importo": 162.29,  "tipo": "uscita",  "categoria": "Spesa" },
-  { "id": "12", "data": "2026-10-02", "nota": "Ricarica Mensile Iliad",    "importo": 19.98,   "tipo": "uscita",  "categoria": "Fissa" }
-]
+[]
